@@ -156,6 +156,60 @@
 					Values of memory range from 0 to 255, with 255 being best and 0 being worst.<br />
 					Therefore, using a condition like <b>&lt;250</b> in a <b>while</b> loop will loop <b>while</b> the value of the current memory cell is less than 250.
 				</p>
+
+				<p>
+					<p>
+						A note on loop "unrolling": This version of the game will sometimes run an additional command after running a loop command.<br />
+						This behaviour simulates loop unrolling, removing 	some of the disadvantages of code like "repeat (5) { + }" over "+++++".<br />
+						The evaluator will run an additional command in the following situations:
+					</p>
+					<ul>
+						<li>At the end of an infinite loop</li>
+						<li>At the end of while loops, but only if the code inside the loop will be rerun.</li>
+						<li>At the end of if statements.</li>
+						<li>At the start and end of repeat loops. This means that there is no difference in performance between "repeat (5) { + }" and "+++++".</li>
+					</ul>
+					<p>
+						Here's an example: If you entered the code "while (&lt;150) { + } &gt;", these are the commands that would be run each step:
+					</p>
+					<ol>
+						<li>Entering while loop</li>
+						<li>Increase (the + command)</li>
+						<li>Repeat and another increase (the + command). These commands would be run on the same cycle.</li>
+						<li>Repeat and increase</li>
+						<li>Repeat and increase</li>
+						<li>Repeat and increase</li>
+						<li>Repeat and exit loop</li>
+						<li>Move right</li>
+					</ol>
+					<p>
+						Finally, here is an overview of the performance loss associated with the usage of certain types of loops:
+					</p>
+					<ul>
+						<li>
+							Repeat loops: none. Feel free to use repeat loops as much as you want.<br />
+							There is no reason to manually unroll loops instead of using a repeat loop.
+						</li>
+						<li>
+							Infinite loops: One cycle is lost when entering an infinite loop, but there is no performance loss when iterating inside one.
+						</li>
+						<li>
+							While loops: One cycle is lost at the start of every while loop.<br />
+							It does not matter if you were going to enter the loop or if you were going to skip it entirely.<br />
+							Another cycle is lost when leaving a while loop.<br />
+							Note that there is no performance loss when iterating inside a while loop.<br />
+						</li>
+						<li>
+							If statements: One cycle is lost for checking if you are going to enter the if statement,<br />
+							but there is no performance loss at the end of an if statement
+						</li>
+					</ul>
+					<p>
+						To stop programs like "infinite {}" from crashing the game, I changed the interpreter to only skip up to 10 loop instruction per cycle.<br />
+						After 10 skipped instructions on a single cycle, a program will be stopped and the other program will be allowed to run (for one cycle).<br />
+						Otherwise, some types of programs would be able to cause a crash.
+					</p>
+				</p>
 			</div>
 		</div>
 	</div>

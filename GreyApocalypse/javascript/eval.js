@@ -75,8 +75,41 @@ Programming language:
 +: increase
 */
 var stepProgram = function (programNumber) {
-	// Returns: whether last command was a loop, in which case another command will need to be run.
-	var lastCommandWasALoop = false;
+	// Returns: whether another command will need to be run for the current program
+	/*
+	GA Loop skipping
+	
+	+ : skip
+	- : don't skip
+
+	If statement
+	    Start
+	        Condition true: -
+	        Condition false: -
+	    End
+	        +
+	
+	While loops
+	    Start
+	        Condition true: -
+	        Condition false: -
+	    End
+	        Condition true: +
+	        Condition false: -
+	
+	Repeat loops
+	    Start
+	        Not finished yet: -
+	        Finished: -
+	    End
+	        Not finished yet: +
+	        Finished: -
+	
+	Infinite loops
+	    Start: -
+	    End: +
+	*/
+	var executeNextCommandImmediately = false;
 	var p = getProgramObject(programNumber);
 	if (p.finished)
 		return;
@@ -111,12 +144,12 @@ var stepProgram = function (programNumber) {
 		break;
 		case 'infiniteloop':
 			p.index++;
-			lastCommandWasALoop = true;
+			executeNextCommandImmediately = false;
 		break;
 		case 'endinfiniteloop':
 			// Add 1 to skip infiniteloop command
 			p.index += currentCommand.startIndexDelta + 1;
-			lastCommandWasALoop = true;
+			executeNextCommandImmediately = true;
 		break;
 		case 'if':
 			if (checkCondition(programNumber, currentCommand.condition, { x:p.x, y:p.y })) {
@@ -124,11 +157,11 @@ var stepProgram = function (programNumber) {
 			} else {
 				p.index += currentCommand.endIndexDelta + 1;
 			}
-			lastCommandWasALoop = true;
+			executeNextCommandImmediately = false;
 		break;
 		case 'endif':
 			p.index++;
-			lastCommandWasALoop = true;
+			executeNextCommandImmediately = true;
 		break;
 		case 'while':
 			var currentLocation = { x:p.x, y:p.y };
@@ -138,7 +171,7 @@ var stepProgram = function (programNumber) {
 			} else {
 				p.index += currentCommand.endIndexDelta + 1;
 			}
-			lastCommandWasALoop = true;
+			executeNextCommandImmediately = false;
 		break;
 		case 'endwhile':
 			var locationFromLoopStack = p.loopStack.pop();
@@ -146,11 +179,12 @@ var stepProgram = function (programNumber) {
 				// condition succeeded, push value back and jump to first command (one after start of while loop)
 				p.loopStack.push(locationFromLoopStack); // no .peek() method
 				p.index += currentCommand.startIndexDelta + 1;
+				executeNextCommandImmediately = true;
 			} else {
 				// condition failed, continue. Loop stack is already popped.
 				p.index++;
+				executeNextCommandImmediately = false;
 			}
-			lastCommandWasALoop = true;
 		break;
 		case 'repeatloop':
 		    currentCommand.currentIteration = 1;
@@ -160,17 +194,19 @@ var stepProgram = function (programNumber) {
 			} else {
 				p.index++;
 			}
-			lastCommandWasALoop = true;
+			executeNextCommandImmediately = false;
 		break;
 		case 'endrepeatloop':
 			var startingLoopCommand = p.ast[p.index + currentCommand.startIndexDelta];
 			if (startingLoopCommand.currentIteration++ >= startingLoopCommand.iterationCount) {
+				// Exit
 				p.index++;
+				executeNextCommandImmediately = false;
 			} else {
+				// Repeat
 				p.index += currentCommand.startIndexDelta;
 				p.index++;
 			}
-			lastCommandWasALoop = true;
 		break;
 		default:
 			throw new Error('Unknown command!');
@@ -179,7 +215,7 @@ var stepProgram = function (programNumber) {
 	if (p.index >= p.ast.length) {
 		p.finished = true;
 	}
-	return lastCommandWasALoop;
+	return executeNextCommandImmediately;
 };
 
 var isGameOver = function () {
@@ -218,8 +254,10 @@ var step = function () {
 	// stepProgram returns true if a loop was evaluated.
 	// Therefore I can use a while loop in my evaluator to avoid performance 
 	// penalties when users want to use loops in the programming language.
-	while (stepProgram(1)) {}
-	while (stepProgram(2)) {}
+	for (var i = 0; i < 10; ++i) { if (stepProgram(1)) break; }
+	for (var i = 0; i < 10; ++i) { if (stepProgram(2)) break; }
+	//while (stepProgram(1)) {}
+	//while (stepProgram(2)) {}
 	env.stepCount++;
 	swapProgramsIfGameOver();
 	return isGameOver();
