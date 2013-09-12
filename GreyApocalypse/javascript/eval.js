@@ -35,6 +35,7 @@ var initPrograms = function (program1, program2, keepScore) {
 		gameState: [[], [], [], [], [], [], [], [], [], []],
 		stage: 1 // Game runs twice. Stage 1: normal, stage 2: programs swapped
 	};
+	env.maxStepCount = parseInt($('#roundLength>option:selected').text());
 	env.sum = prevSum;
 	env.program1.ast = parser.parse(env.program1.sourceString);
 	env.program2.ast = parser.parse(env.program2.sourceString);

@@ -82,6 +82,7 @@ var onLoadFunction = function () {
 				$('#validateButton').removeAttr('disabled');
 				$('#p1textarea').removeAttr('disabled');
 				$('#p2textarea').removeAttr('disabled');
+				$('#roundLength').removeAttr('disabled');
 			break;
 			case 0: // game stopped
 				$('#startButton').removeAttr('disabled');
@@ -92,6 +93,7 @@ var onLoadFunction = function () {
 				$('#validateButton').removeAttr('disabled');
 				$('#p1textarea').removeAttr('disabled');
 				$('#p2textarea').removeAttr('disabled');
+				$('#roundLength').removeAttr('disabled');
 			break;
 			case 1: // running
 				$('#startButton').attr('disabled', 'disabled');
@@ -102,6 +104,7 @@ var onLoadFunction = function () {
 				$('#validateButton').attr('disabled', 'disabled');
 				$('#p1textarea').attr('disabled', 'disabled');
 				$('#p2textarea').attr('disabled', 'disabled');
+				$('#roundLength').attr('disabled', 'disabled');
 			break;
 			case 2: // paused
 				$('#startButton').removeAttr('disabled');
@@ -112,6 +115,7 @@ var onLoadFunction = function () {
 				$('#validateButton').attr('disabled', 'disabled');
 				$('#p1textarea').attr('disabled', 'disabled');
 				$('#p2textarea').attr('disabled', 'disabled');
+				$('#roundLength').attr('disabled', 'disabled');
 			break;
 			case 3: // game over
 				$('#startButton').attr('disabled', 'disabled');
@@ -122,6 +126,7 @@ var onLoadFunction = function () {
 				$('#validateButton').removeAttr('disabled');
 				$('#p1textarea').removeAttr('disabled');
 				$('#p2textarea').removeAttr('disabled');
+				$('#roundLength').removeAttr('disabled');
 			break;
 		}
 	};
@@ -150,6 +155,10 @@ var onLoadFunction = function () {
 			return false;
 		}
 		initPrograms(p1, p2);
+		env.maxStepCount = parseInt($('#roundLength>option:selected').text());
+		$('#progressBar1').attr('max', env.maxStepCount);
+		$('#progressBar2').attr('max', env.maxStepCount);
+		$('#progressBarTotal').attr('max', env.maxStepCount * 2);
 		return true;
 	};
 	$('#stepButton').click(stepOnce);

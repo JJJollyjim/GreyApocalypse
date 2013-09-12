@@ -10,7 +10,7 @@
 <body>
 	<div id="mainDiv">
 		<h1>Grey Apocalypse</h1>
-		<p>Version 0.2.1</p>
+		<p>Version 0.2.2</p>
 		<div id="gameDiv">
 			<!-- 10px space on all sides -->
 			<canvas width="320" height="320" id="gameStateCanvas">
@@ -33,7 +33,17 @@
 			<button id="resetButton">Reset</button>
 			<button id="validateButton">Check Programs</button>
 			<p>
-				Simulation speed: <input  id="speedSlider" type="range" min="0" max="50" value="40" />
+				Simulation speed: <input id="speedSlider" type="range" min="0" max="50" value="40" />
+			</p>
+			<p>
+				Round length: 
+				<select id="roundLength">
+					<option>500</option>
+					<option>1000</option>
+					<option>2000</option>
+					<option selected>2500</option>
+					<option>5000</option>
+				</select>
 			</p>
 			<br />
 			<p>
@@ -215,6 +225,7 @@
 				<br />
 				<p><b><u>Changelog:</u></b></p>
 				<p>
+					* 0.2.2: Added an option to change round length<br />
 					* 0.2.1: Fixed a very minor documentation issue<br />
 					* 0.2.0: Changed range of numbers from 0 - 255 to -127 - 127.<br />
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Changed scoring, maximum score is now 12700 per round, for a total of 25400.<br />
