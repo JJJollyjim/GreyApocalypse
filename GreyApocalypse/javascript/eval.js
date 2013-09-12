@@ -39,7 +39,7 @@ var initPrograms = function (program1, program2, keepScore) {
 	env.program1.ast = parser.parse(env.program1.sourceString);
 	env.program2.ast = parser.parse(env.program2.sourceString);
 	for (var i = 0; i < 10; ++i) {
-		env.gameState[i] = [127, 127, 127, 127, 127, 127, 127, 127, 127, 127];
+		env.gameState[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	}
 };
 
@@ -256,8 +256,6 @@ var step = function () {
 	// penalties when users want to use loops in the programming language.
 	for (var i = 0; i < 10; ++i) { if (stepProgram(1)) break; }
 	for (var i = 0; i < 10; ++i) { if (stepProgram(2)) break; }
-	//while (stepProgram(1)) {}
-	//while (stepProgram(2)) {}
 	env.stepCount++;
 	swapProgramsIfGameOver();
 	return isGameOver();
@@ -280,7 +278,7 @@ var swapProgramsAndReset = function () {
 
 var getValAtPos = function (x, y) {
 	if (x < 0 || x > 9 || y < 0 || y > 9) // This is important for the '=' command
-		return 127;
+		return 0;                         // These values range from -127 to 127
 	return env.gameState[x][y];
 };
 var setValAtPos = function (x, y, val) {
@@ -290,7 +288,7 @@ var setValAtPos = function (x, y, val) {
 var checkCondition = function (programNumber, cond, location) {
 	// checks a condition.
 	// NOTE: From both player's point of view, they are trying to increase the value to 255. So p2 needs to be inverted.
-	var value1 = programNumber == 1 ? getValAtPos(location.x, location.y) : 255 - getValAtPos(location.x, location.y);
+	var value1 = (programNumber == 1 ? 1 : -1) * getValAtPos(location.x, location.y);
 	var value2 = cond.number;
 	var comparator = cond.comparator;
 	if (comparator == '>') {
@@ -366,18 +364,18 @@ var eval_setToAverage = function (program) {
 var eval_increase = function (program) {
 	var p = getProgramObject(program);
 	var currentValue = getValAtPos(p.x, p.y);
-	var delta = gaussianFunction(currentValue, 18, 127, 30, 2); // range 2 to 20, centered at 127, "width" of 30
+	var delta = gaussianFunction(currentValue, 18, 0, 30, 2); // range 2 to 20, centered at 0, "width" of 30
 	delta = Math.ceil(delta);
 	if (program == 1) {
 		currentValue += delta;
 	} else {
 		currentValue -= delta;
 	}
-	if (currentValue > 255) {
-		currentValue = 255;
+	if (currentValue > 127) {
+		currentValue = 127;
 	}
-	if (currentValue < 0) {
-		currentValue = 0;
+	if (currentValue < -127) {
+		currentValue = -127;
 	}
 	var difference = currentValue - getValAtPos(p.x, p.y);
 	env.sum[env.stage-1] += difference;

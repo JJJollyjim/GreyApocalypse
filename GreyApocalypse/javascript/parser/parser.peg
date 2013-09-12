@@ -90,7 +90,7 @@ comparison = _ c:comparator _ n:number _ { return { tag: "comparison", comparato
 
 comparator = ">" / "<"
 
-number = d:[0-9]+ { return parseInt(d.join("")); }
+number = sign:"-"? d:[0-9]+ { return parseInt(sign + d.join("")); }
 
 _ = (comment / whitespace)* / ""
 

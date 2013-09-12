@@ -1,9 +1,10 @@
 var getColour = function (value) {
-	return 'rgb(' + value + ',' + value + ',' + value + ')';
+	var brightness = value + 127;
+	return 'rgb(' + brightness + ',' + brightness + ',' + brightness + ')';
 }
 
 var drawUI = function () {
-	ctx.fillStyle = '#999';
+	ctx.fillStyle = 'rgb(127,127,127)';
 	ctx.fillRect(0, 0, 320, 320);
 	if (!env.loaded) {
 		return;
