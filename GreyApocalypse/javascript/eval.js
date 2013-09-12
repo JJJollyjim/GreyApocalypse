@@ -255,8 +255,8 @@ var step = function () {
 	// stepProgram returns true if a loop was evaluated.
 	// Therefore I can use a while loop in my evaluator to avoid performance 
 	// penalties when users want to use loops in the programming language.
-	for (var i = 0; i < 10; ++i) { if (stepProgram(1)) break; }
-	for (var i = 0; i < 10; ++i) { if (stepProgram(2)) break; }
+	for (var i = 0; i < 10; ++i) { if (!stepProgram(1)) break; }
+	for (var i = 0; i < 10; ++i) { if (!stepProgram(2)) break; }
 	env.stepCount++;
 	swapProgramsIfGameOver();
 	return isGameOver();
