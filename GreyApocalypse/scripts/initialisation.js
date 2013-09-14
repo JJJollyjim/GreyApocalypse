@@ -3,6 +3,6 @@
 define(['evaluator/initialiseEnvironment'], function (initEnv) {
 	return function () {
 		//initEnv('infinite { +> }', 'infinite { repeat (10) { +> } v }')
-		initEnv('+++', '++++');
+		initEnv('+++>>>>>>>', '++++');
 	}
 })

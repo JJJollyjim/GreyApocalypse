@@ -14,16 +14,16 @@ define([
 			case 'increase': {
 				return increaseCommand(command, p);
 			}
-			case 'moveLeft': {
+			case 'moveleft': {
 				return moveLeftCommand(command, p);
 			}
-			case 'moveRight': {
+			case 'moveright': {
 				return moveRightCommand(command, p);
 			}
-			case 'moveUp': {
+			case 'moveup': {
 				return moveUpCommand(command, p);
 			}
-			case 'moveDown': {
+			case 'movedown': {
 				return moveDownCommand(command, p);
 			}
 		}
