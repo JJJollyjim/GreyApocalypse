@@ -1,7 +1,5 @@
-define(['evaluator/env'], function (e) {
+define([], function () {
 	return function (command, p) {
-		var env = e.environment;
-
 		p.x++;
 		if (p.x > 9) {
 			p.x = 0;
