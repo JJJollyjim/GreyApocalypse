@@ -12,8 +12,6 @@ define(['evaluator/env', 'evaluator/gaussianFunction'], function (e, gaussianFun
 			delta *= -1;
 		}
 
-		console.log('Increase command: ' + delta)
-
 		return {
 			command: command,
 			program: p.programNumber,
