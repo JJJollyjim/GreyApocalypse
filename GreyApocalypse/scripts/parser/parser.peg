@@ -1,0 +1,101 @@
+// When modifying the grammar, remember to set the parser variable to 'parser'
+
+start = sequence
+
+sequence = c:command*
+{
+  window.flatten = function(arr) { // from http://stackoverflow.com/a/16373882
+    return arr.reduce(function flatten(res, a) { 
+      Array.isArray(a) ? a.reduce(flatten, res) : res.push(a);
+      return res;
+    }, []);
+  }
+  // flatten array
+  return flatten(c);
+}
+
+command = movementCommand / increaseCommand / setToAverageCommand / sleepCommand / controlExpression
+
+movementCommand  = moveRightCommand / moveLeftCommand / moveUpCommand / moveDownCommand
+
+moveRightCommand    = _ ">"       _ { return { tag: "moveright"    }; }
+moveLeftCommand     = _ "<"       _ { return { tag: "moveleft"     }; }
+moveUpCommand       = _ ("v"/"V") _ { return { tag: "movedown"     }; }
+moveDownCommand     = _ "^"       _ { return { tag: "moveup"       }; }
+increaseCommand     = _ "+"       _ { return { tag: "increase"     }; }
+setToAverageCommand = _ "="       _ { return { tag: "setToAverage" }; }
+sleepCommand        = _ "."       _ { return { tag: "sleep"        }; }
+
+controlExpression = ifStatement / whileLoop / infiniteLoop / repeatLoop
+
+ifStatement = _ "if" _ "(" _ c:comparison _ ")" _ "{" _  s:sequence _ "}" _
+{
+  return [{ 
+    tag: "if",
+    condition: c,
+    endIndexDelta: s.length + 1
+  },
+  s,
+  {
+    tag: "endif",
+    condition: c,
+    startIndexDelta: -s.length - 1
+  }];
+}
+whileLoop = _ "while" _ "(" _  c:comparison _ ")" _ "{" s:sequence _ "}" _
+{
+  return [{ 
+    tag: "while",
+    condition: c,
+    endIndexDelta: s.length + 1
+  },
+  s,
+  {
+    tag: "endwhile",
+    condition: c,
+    startIndexDelta: -s.length - 1
+  }];
+}
+infiniteLoop = _ "infinite" _ "{" _ s:sequence _ "}" _
+{
+  var s = window.flatten(s);
+  return [{ 
+    tag: "infiniteloop",
+    endIndexDelta: s.length + 1
+  },
+  s,
+  {
+    tag: "endinfiniteloop",
+    startIndexDelta: -s.length - 1
+  }];
+}
+repeatLoop = _ "repeat" _ "(" _  n:number _ ")" _ "{" s:sequence _ "}" _
+{
+  var s = window.flatten(s);
+  return [{ 
+    tag: "repeatloop",
+    iterationCount: n,
+    currentIteration: 0, // this will be used by the evaluator
+    endIndexDelta: s.length + 1
+  },
+  s,
+  {
+    tag: "endrepeatloop",
+    iterationCount: n,
+    startIndexDelta: -s.length - 1
+  }];
+}
+
+comparison = _ c:comparator _ n:number _ { return { tag: "comparison", comparator: c, number: n }; }
+
+comparator = ">" / "<"
+
+number = sign:"-"? d:[0-9]+ { return parseInt(sign + d.join("")); }
+
+_ = (comment / whitespace)* / ""
+
+comment "comment" = "#" [^\n]* ("\n" / EOF)
+
+EOF = !.
+
+whitespace "whitespace" = " " / "\n" / "\t"

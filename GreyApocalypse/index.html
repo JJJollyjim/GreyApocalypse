@@ -1,10 +1,6 @@
 ﻿<html>
 <head>
 	<title>Grey Apocalypse</title>
-	<script type="text/javascript" src="javascript/parser/parser.js"></script>
-	<script type="text/javascript" src="javascript/eval.js"></script>
-	<script type="text/javascript" src="javascript/ui.js"></script>
-	<script type="text/javascript" src="javascript/lib/jquery-1.10.2.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
@@ -52,28 +48,20 @@
 				<br />
 				<table>
 					<tr>
+						<th>&nbsp;</th>
 						<th></th>
-						<th>Round 1</th>
-						<th>Round 2</th>
-						<th class="lastColoumnHighlight">Total</th>
 					</tr>
 					<tr>
 						<td>Progress</td>
-						<td><progress id="progressBar1" value="0" max="2500"></progress></td>
-						<td><progress id="progressBar2" value="0" max="2500"></progress></td>
-						<td class="lastColoumnHighlight"><progress id="progressBarTotal" value="0" max="5000"></progress></td>
+						<td><progress id="progressBar" value="0" max="2500" style="width:500"></progress></td>
 					</tr>
 					<tr>
 						<td>Winner</td>
-						<td><p id="winner1"></p></td>
-						<td><p id="winner2"></p></td>
-						<td class="lastColoumnHighlight"><p id="winnerTotal"></p></td>
+						<td><p id="winner"></p></td>
 					</tr>
 					<tr>
 						<td>Score</td>
-						<td><p id="gameSum1"></p></td>
-						<td><p id="gameSum2"></p></td>
-						<td class="lastColoumnHighlight"><p id="gameSumTotal"></p></td>
+						<td><p id="gameSum"></p></td>
 					</tr>
 				</table>
 			</p>
@@ -241,8 +229,6 @@
 			</div>
 		</div>
 	</div>
-	<script>
-		$(document).ready(onLoadFunction);
-	</script>
+	<script data-main="scripts/main" src="scripts/lib/require.js"></script>
 </body>
 </html>
