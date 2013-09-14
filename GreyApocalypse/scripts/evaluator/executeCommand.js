@@ -52,10 +52,13 @@ define(['evaluator/env', 'evaluator/convertCommandToCommandObject', 'evaluator/a
 
 		var env = e.environment;
 
-		env.stepCount++;
-
 		var p1 = env.program1;
 		var p2 = env.program2;
+
+		if (p1.finished && p2.finished)
+			return true;
+
+		env.stepCount++;
 
 		if (p1.cyclePauseCount >= 1) {
 			p1.cyclePauseCount--;

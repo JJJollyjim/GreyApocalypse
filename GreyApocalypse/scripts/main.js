@@ -19,8 +19,8 @@ require.config({
 
 require(['initialisation', 'evaluator/env', 'evaluator/executeCommand', 'ui/step'], function(init, env, executeCommand, step) {
 	init();
-	for (var i = 0; i < 20; ++i) {
-		console.log(env);
-		step();
-	}
+	//for (var i = 0; i < 20; ++i) {
+	//	console.log(env);
+	//	step();
+	//}
 });
