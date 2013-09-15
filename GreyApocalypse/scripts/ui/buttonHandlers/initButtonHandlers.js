@@ -1,13 +1,17 @@
 define([
-	'ui/buttonHandlers/stepButtonHandler', 
 	'ui/buttonHandlers/startButtonHandler',
 	'ui/buttonHandlers/pauseButtonHandler',
+	'ui/buttonHandlers/stepButtonHandler', 
+	'ui/buttonHandlers/restartButtonHandler',
+	'ui/buttonHandlers/resetButtonHandler',
 	'ui/buttonHandlers/validateButtonHandler'], 
-	function (stepButtonHandler, startButtonHandler, pauseButtonHandler, validateButtonHandler) {
+	function (startButtonHandler, pauseButtonHandler, stepButtonHandler, restartButtonHandler, resetButtonHandler, validateButtonHandler) {
 	return function () {
-		stepButtonHandler();
 		startButtonHandler();
 		pauseButtonHandler();
+		stepButtonHandler();
+		restartButtonHandler();
+		resetButtonHandler();
 		validateButtonHandler();
 	};
 });
