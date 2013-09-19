@@ -11,6 +11,5 @@ define(['evaluator/initialiseEnvironment', 'ui/buttonHandlers/initButtonHandlers
 			$('#p1textarea').val(localStorage.program1);
 		if (localStorage.program2)
 			$('#p2textarea').val(localStorage.program2);
-		};
-	}
-})
+	};
+});

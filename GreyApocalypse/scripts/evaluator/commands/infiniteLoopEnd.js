@@ -1,10 +1,5 @@
 define([], function () {
 	return function (command, p) {
-		p.y++;
-		if (p.y > 9) {
-			p.y = 0;
-		}
-
 		return {
 			command: command,
 			program: p.programNumber,
@@ -13,8 +8,8 @@ define([], function () {
 				y: 0,
 				delta: 0
 			},
-			commandLength: 2,
-			instructionPointerDelta: 1
+			commandLength: 1,
+			instructionPointerDelta: command.startIndexDelta + 1
 		};
-	}
-})
+	};
+});

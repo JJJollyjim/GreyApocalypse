@@ -4,13 +4,17 @@ define([
 	'evaluator/commands/moveRight',
 	'evaluator/commands/moveUp',
 	'evaluator/commands/moveDown',
-	'evaluator/commands/sleep'], function (
+	'evaluator/commands/sleep',
+	'evaluator/commands/infiniteLoopStart',
+	'evaluator/commands/infiniteLoopEnd'], function (
 		increaseCommand,
 		moveLeftCommand,
 		moveRightCommand,
 		moveUpCommand,
 		moveDownCommand,
-		sleepCommand) {
+		sleepCommand,
+		infiniteLoopStartCommand,
+		infiniteLoopEndCommand) {
 	return function (command, p) {
 		switch (command.tag) {
 			case 'increase': {
@@ -30,6 +34,17 @@ define([
 			}
 			case 'sleep': {
 				return sleepCommand(command, p);
+			}
+			case 'infiniteloop': {
+				return infiniteLoopStartCommand(command, p);
+			}
+			case 'endinfiniteloop': {
+				return infiniteLoopEndCommand(command, p);
+			}
+			default: {
+				var errorMessage = 'Unknown command: ' + command.tag;
+				console.error(errorMessage);
+				throw new Error(errorMessage);
 			}
 		}
 	}

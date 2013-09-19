@@ -1,4 +1,4 @@
-define(['jquery', 'ui/updateGameState', 'eevaluator/initialiseEnvironment', 'ui/drawUI'], 
+define(['jquery', 'ui/updateGameState', 'evaluator/initialiseEnvironment', 'ui/drawUI'], 
 	function ($, loadPrograms, updateGameState, initialiseEnvironment, drawUI) {
 	return function () {
 		$('#restartButton').click(function () {
