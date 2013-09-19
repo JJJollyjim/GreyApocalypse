@@ -6,7 +6,9 @@ define([
 	'evaluator/commands/moveDown',
 	'evaluator/commands/sleep',
 	'evaluator/commands/infiniteLoopStart',
-	'evaluator/commands/infiniteLoopEnd'], function (
+	'evaluator/commands/infiniteLoopEnd',
+	'evaluator/commands/whileLoopStart',
+	'evaluator/commands/whileLoopEnd'], function (
 		increaseCommand,
 		moveLeftCommand,
 		moveRightCommand,
@@ -14,38 +16,36 @@ define([
 		moveDownCommand,
 		sleepCommand,
 		infiniteLoopStartCommand,
-		infiniteLoopEndCommand) {
+		infiniteLoopEndCommand,
+		whileLoopStartCommand,
+		whileLoopEndCommand) {
 	return function (command, p) {
 		switch (command.tag) {
-			case 'increase': {
+			case 'increase': 
 				return increaseCommand(command, p);
-			}
-			case 'moveleft': {
+			case 'moveleft': 
 				return moveLeftCommand(command, p);
-			}
-			case 'moveright': {
+			case 'moveright': 
 				return moveRightCommand(command, p);
-			}
-			case 'moveup': {
+			case 'moveup': 
 				return moveUpCommand(command, p);
-			}
-			case 'movedown': {
+			case 'movedown': 
 				return moveDownCommand(command, p);
-			}
-			case 'sleep': {
+			case 'sleep': 
 				return sleepCommand(command, p);
-			}
-			case 'infiniteloop': {
+			case 'infiniteloop': 
 				return infiniteLoopStartCommand(command, p);
-			}
-			case 'endinfiniteloop': {
+			case 'endinfiniteloop': 
 				return infiniteLoopEndCommand(command, p);
-			}
-			default: {
+			case 'while': 
+				return whileLoopStartCommand(command, p);
+			case 'endwhile': 
+				return whileLoopEndCommand(command, p);
+
+			default: 
 				var errorMessage = 'Unknown command: ' + command.tag;
 				console.error(errorMessage);
 				throw new Error(errorMessage);
-			}
 		}
 	}
 })
