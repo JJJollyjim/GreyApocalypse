@@ -1,0 +1,234 @@
+<html>
+<head>
+	<title>Grey Apocalypse</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+	<div id="mainDiv">
+		<h1>Grey Apocalypse</h1>
+		<p>Version 0.3.0</p>
+		<div id="gameDiv">
+			<!-- 10px space on all sides -->
+			<canvas width="320" height="320" id="gameStateCanvas">
+				Please use a modern browser to play this game
+			</canvas>
+		</div>
+		<div id="p1div">
+			<textarea id="p1textarea" rows="20" cols="50"># Enter the code for program 1 here...&#10;&#10;infinite {&#10;  +>&#10;}</textarea>
+		</div>
+		<div id="p2div">
+			<textarea id="p2textarea" rows="20" cols="50"># Enter the code for program 2 here...&#10;&#10;infinite {&#10;  repeat (10) {&#10;    +>&#10;  }&#10;  v&#10;}</textarea>
+		</div>
+		<br />
+		<div style="clear:both;">
+			<br />
+			<button id="startButton">Start / Resume</button>
+			<button id="pauseButton">Pause</button>
+			<button id="stepButton">Step</button>
+			<button id="restartButton">Restart</button>
+			<button id="resetButton">Reset</button>
+			<button id="validateButton">Check Programs</button>
+			<p>
+				Simulation speed: <input id="speedSlider" type="range" min="0" max="50" value="40" />
+			</p>
+			<p>
+				Round length: 
+				<select id="roundLength">
+					<option>500</option>
+					<option>1000</option>
+					<option>2000</option>
+					<option selected>2500</option>
+					<option>5000</option>
+				</select>
+			</p>
+			<br />
+			<p>
+				<b><u>Game progress:</u></b>
+				<br />
+				<br />
+				<table>
+					<tr>
+						<th>&nbsp;</th>
+						<th></th>
+					</tr>
+					<tr>
+						<td>Progress</td>
+						<td><progress id="progressBar" value="0" max="2500" style="width:500"></progress></td>
+					</tr>
+					<tr>
+						<td>Winner</td>
+						<td><p id="winner"></p></td>
+					</tr>
+					<tr>
+						<td>Score</td>
+						<td><p id="gameSum"></p></td>
+					</tr>
+				</table>
+			</p>
+			<br />
+			<div id="helpDiv">
+				<p><b><u>How to play:</u></b></p>
+				
+				<p>
+					Grey Apocalypse is a programming game. This means that two players have to write programs in the GA programming language.<br />
+					The grey box above is the memory of a simulated computer. When you click on the "Start" button, the game will start, the two programs will be loaded<br />
+					and executed. A game of GA consists of two rounds. In round 1, program 1 will be white, and program 2 will be black. White always goes first.<br />
+					In round 2, the two programs will be swapped. The goal of the game for the white program is to make the "memory" as white as possible, while the black<br />
+					program tries to make the memory as dark as possible. Programs can do this using the commands described below.<br />
+					There are two example programs available that are loaded by default. You can just press the "Start" button without doing anything else<br />
+					to see those two programs in action!
+				</p>
+				
+				<br />
+				
+				<p><b><u>Overview of Commands:</u></b></p>
+				
+				<p>
+					<b>+</b>: This command increases the value of the current memory cell.<br />
+					For the white program, this will make the current memory cell lighter. If this command is run from the black program, the cell will be made darker.<br />
+					<p class="advancedhelp">
+						Advanced usage: When a memory cell is 50% grey (the default colour), the <b>+</b> command will be most effective.<br />
+						When a memory cell is almost completely white or black, the <b>+</b> command is less effective.<br />
+						Then, it will only increase the value roughly a sixth of what is would increase by if the colour was grey instead of almost completely white or black.<br />
+						Therefore, it is much more efficient to use the <b>+</b> command when the colour of the current memory cell is as close to grey as possible.
+					</p>
+				</p>
+				
+				<p>
+					<b>=</b>: This command sets the value of the current memory cell to the average of the surrounding cells.<br />
+					<p class="advancedhelp">
+						Advanced usage: This command gets the values of the four surrounding cells.<br />
+						The value that is "worst" for the current program is removed, and the average of the remaining three values will be the new value of the current memory cell.<br />
+						For the white program, the value that will be removed is the darkest value, and the black program will remove the lightest value.
+					</p>
+				</p>
+				
+				<p>
+					<b>^</b>: This command moves the program up one memory cell.
+				</p>
+				
+				<p>
+					<b>v</b>: This command moves the program down.
+				</p>
+				
+				<p>
+					<b>&lt;</b>: This command moves the program left.
+				</p>
+				
+				<p>
+					<b>&gt;</b>: This command moves the program right.
+				</p>
+				
+				<p>
+					<b>.</b>: This command does nothing (no-op).
+				</p>
+				
+				<p>
+					<b>infinite { </b><i><u>commands</u></i><b> }</b>: This is an infinite loop. All <i><u>commands</u></i> inside it are run infinitely.
+				</p>
+				
+				<p>
+					<b>repeat (</b><i><u>number</u></i><b>) { </b><i><u>commands</u></i><b> }</b>: 
+					This is a loop that runs its <i><u>commands</u></i> a certain number of times.<br />
+					The <i><u>number</u></i> entered in brackets shows how often the commands should be repeated.
+				</p>
+				
+				<p>
+					<b>while (</b><a class="helpref" href="#conditionHelp">condition</a><b>) { </b><i><u>commands</u></i><b> }</b>: 
+					This is a loop that runs its <i><u>commands</u></i> <b>while</b> a certain <a class="helpref" href="#conditionHelp">condition</a> is true.
+					<p class="advancedhelp">
+						Advanced usage: Every while loop will store the current x and y coordinates when entering the loop and retrieve the memory value <br />
+						from that position instead of using the current value as the program may have moved in the meantime.
+					</p>
+				</p>
+				
+				<p>
+					<b>if (</b><a class="helpref" href="#conditionHelp">condition</a><b>) { </b><i><u>commands</u></i><b> }</b>: 
+					An <b>if</b> statement will only run its <i><u>commands</u></i> <b>if</b> certain <i><u>condition</u></i> is true.
+				</p>
+
+				<p id="conditionHelp">
+					Conditions: A <i><u>condition</u></i> always consists of a comparator (greater than (&gt;) or less than (&lt;)) and a number.<br />
+					For example, &gt;5 is a valid condition.<br />
+					Conditions always compare the value of the current memory cell with the specified number.<br />
+					In this example, the loop would run its commands <b>while</b> the value of the current memory cell is <b>greater than</b> 5.<br />
+					Values of memory range from -127 to 127, with 127 being best and -127 being worst.<br />
+					Therefore, using a condition like <b>&lt; -10</b> in a <b>while</b> loop will loop <b>while</b> the value of the current memory cell is less than -10.
+				</p>
+
+				<p>
+					<p>
+						A note on loop "unrolling": This version of the game will sometimes run an additional command after running a loop command.<br />
+						This behaviour simulates loop unrolling, removing 	some of the disadvantages of code like "repeat (5) { + }" over "+++++".<br />
+						The evaluator will run an additional command in the following situations:
+					</p>
+					<ul>
+						<li>At the end of an infinite loop</li>
+						<li>At the end of while loops, but only if the code inside the loop will be rerun.</li>
+						<li>At the end of if statements.</li>
+						<li>At the start and end of repeat loops. This means that there is no difference in performance between "repeat (5) { + }" and "+++++".</li>
+					</ul>
+					<p>
+						Here's an example: If you entered the code "while (&lt;60) { + } &gt;", these are the commands that would be run each step:
+					</p>
+					<ol>
+						<li>Entering while loop</li>
+						<li>Increase (the + command)</li>
+						<li>Repeat and another increase (the + command). These commands would be run on the same cycle.</li>
+						<li>Repeat and increase</li>
+						<li>Repeat and increase</li>
+						<li>Repeat and increase</li>
+						<li>Repeat and exit loop</li>
+						<li>Move right</li>
+					</ol>
+					<p>
+						Finally, here is an overview of the performance loss associated with the usage of certain types of loops:
+					</p>
+					<ul>
+						<li>
+							Repeat loops: none. Feel free to use repeat loops as much as you want.<br />
+							There is no reason to manually unroll loops instead of using a repeat loop.
+						</li>
+						<li>
+							Infinite loops: One cycle is lost when entering an infinite loop, but there is no performance loss when iterating inside one.
+						</li>
+						<li>
+							While loops: One cycle is lost at the start of every while loop.<br />
+							It does not matter if you were going to enter the loop or if you were going to skip it entirely.<br />
+							Another cycle is lost when leaving a while loop.<br />
+							Note that there is no performance loss when iterating inside a while loop.<br />
+						</li>
+						<li>
+							If statements: One cycle is lost for checking if you are going to enter the if statement,<br />
+							but there is no performance loss at the end of an if statement
+						</li>
+					</ul>
+					<p>
+						To stop programs like "infinite {}" from crashing the game, I changed the interpreter to only skip up to 10 loop instructions per cycle.<br />
+						After 10 skipped instructions on a single cycle, a program will be stopped and the other program will be allowed to run (for one cycle).<br />
+						Otherwise, some types of programs would be able to cause a crash.
+					</p>
+				</p>
+				<br />
+				<br />
+				<p><b><u>Changelog:</u></b></p>
+				<p>
+					* 0.2.3: Major bugfix related to loop unrolling<br />
+					* 0.2.2: Added an option to change round length<br />
+					* 0.2.1: Fixed a very minor documentation issue<br />
+					* 0.2.0: Changed range of numbers from 0 - 255 to -127 - 127.<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Changed scoring, maximum score is now 12700 per round, for a total of 25400.<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Negative numbers are now supported in your programs.<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Changed default programs to improve IE10 compatibility.<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Updated documentation<br />
+					* 0.1.3: Added version number and changelog<br />
+					* 0.1.2: Changes loop unrolling and improved documentation<br />
+					* 0.1.1: Added loop unrolling<br />
+					* 0.1.0: Initial version
+				</p>
+			</div>
+		</div>
+	</div>
+	<script type="test/javascript" src="main-built.js"></script>
+</body>
+</html>
