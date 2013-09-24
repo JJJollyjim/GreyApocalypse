@@ -1,12 +1,13 @@
 define([], function () {
 	return function (command, p) {
-		command.currentIteration = 1;
+		var startingLoopCommand = p.ast[p.instructionPointer + command.startIndexDelta];
 		var instructionPointerDelta = 0;
-		if (command.iterationCount <= 0) {
-			// Skip loop
-			instructionPointerDelta = command.endIndexDelta + 1;
-		} else {
+		if (startingLoopCommand.currentIteration++ >= startingLoopCommand.iterationCount) {
+			// Exit
 			instructionPointerDelta = 1;
+		} else {
+			// Repeat
+			instructionPointerDelta = command.startIndexDelta + 1;
 		}
 
 		return {

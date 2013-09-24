@@ -8,7 +8,9 @@ define([
 	'evaluator/commands/infiniteLoopStart',
 	'evaluator/commands/infiniteLoopEnd',
 	'evaluator/commands/whileLoopStart',
-	'evaluator/commands/whileLoopEnd'], function (
+	'evaluator/commands/whileLoopEnd',
+	'evaluator/commands/repeatLoopStart',
+	'evaluator/commands/repeatLoopEnd'], function (
 		increaseCommand,
 		moveLeftCommand,
 		moveRightCommand,
@@ -18,7 +20,9 @@ define([
 		infiniteLoopStartCommand,
 		infiniteLoopEndCommand,
 		whileLoopStartCommand,
-		whileLoopEndCommand) {
+		whileLoopEndCommand,
+		repeatLoopStartCommand,
+		repeatLoopEndCommand) {
 	return function (command, p) {
 		switch (command.tag) {
 			case 'increase': 
@@ -41,6 +45,10 @@ define([
 				return whileLoopStartCommand(command, p);
 			case 'endwhile': 
 				return whileLoopEndCommand(command, p);
+			case 'repeatloop': 
+				return repeatLoopStartCommand(command, p);
+			case 'endrepeatloop': 
+				return repeatLoopEndCommand(command, p);
 
 			default: 
 				var errorMessage = 'Unknown command: ' + command.tag;
