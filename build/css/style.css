@@ -1,0 +1,67 @@
+body {
+}
+
+p, h1, h2, h3, h4, h5, h6, li {
+	font-family: monospace;
+}
+
+#gameDiv {
+	float: left;
+}
+
+#p1div, #p2div {
+	float: left;
+}
+
+#p1textarea, #p2textarea {
+	float: right;
+	height: 320;
+}
+
+textarea {
+	font-family: monospace;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+td {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.lastColoumnHighlight {
+	background-color: #eee;
+}
+
+.currentRoundHighlight {
+	background-color: #cfc;
+}
+
+table {
+	border-collapse:collapse;
+}
+
+.description {
+    display:none;
+    position:absolute;
+    border:1px solid #000;
+    width:400px;
+    height:400px;
+}
+
+.descriptionparent:hover .description {
+  display: block;
+}
+
+.helpref {
+	/* use on a tags that link to help descriptions */
+	color: black;
+	font-style: italic;
+}
+
+.advancedhelp {
+	font-size: 90%;
+	margin-left: 50px;
+}
