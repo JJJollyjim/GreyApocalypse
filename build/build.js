@@ -15,6 +15,9 @@
 			exports: 'parser'
 		}
 	},
+	include: [
+        'lib/require.js'
+	],
 	name: 'main',
 	out: 'main-built.js',
 	optimize: 'uglify2'
